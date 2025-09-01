@@ -1,0 +1,42 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="com.dailytracker.model.User" %>
+<%--
+    This JSP fragment provides a consistent header and navigation across your web application.
+    It checks if a user is logged in (via 'currentUser' in session) and adjusts links accordingly.
+    It relies on JSTL for conditional logic and variable setting.
+--%>
+
+<div class="header">
+    <h1>Daily Task Tracker</h1>
+    <p>Organize your day, boost your productivity.</p>
+</div>
+
+<%--
+    Retrieve the currentUser from the session.
+    Using c:set here to make the 'currentUser' object easily accessible
+    in JSTL expressions within this fragment and the including JSP.
+--%>
+<c:set var="currentUser" value="${sessionScope.currentUser}" />
+
+<c:if test="${currentUser != null}">
+    <%-- Display welcome message and logout link if user is logged in --%>
+    <div class="welcome-message">
+        Welcome, <strong>${currentUser.username}</strong>!
+        <a href="logout">Logout</a>
+    </div>
+</c:if>
+
+<div class="navbar">
+    <c:if test="${currentUser != null}">
+        <%-- Navigation links for logged-in users --%>
+        <a href="addTask">Add New Task</a>
+        <a href="viewTasks">All Tasks</a>
+        <a href="viewTasks?filter=today">Today's Tasks</a>
+        <a href="productivity">Productivity Insights</a>
+    </c:if>
+    <c:if test="${currentUser == null}">
+        <%-- Navigation links for logged-out users (login/signup) --%>
+        <a href="login">Login</a>
+        <a href="register">Sign Up</a>
+    </c:if>
+</div>
